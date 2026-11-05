@@ -1,0 +1,25 @@
+workflows:
+  android-build:
+    name: Android APK
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      java: 17
+      vars:
+        STORE_PASSWORD: "FuckAI11"
+        KEY_PASSWORD: "FuckAI11"
+    scripts:
+      - name: Build APK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          export KEYSTORE_PATH="$CM_BUILD_DIR/my-upload-key.jks"
+          keytool -genkeypair -v -keystore "$KEYSTORE_PATH" -alias upload \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -dname "CN=MyApp, O=MyApp, C=US"
+          GRADLE_VERSION=9.3.1
+          curl -sL "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -o gradle.zip
+          unzip -q gradle.zip -d "$HOME/gradle-dist"
+          "$HOME/gradle-dist/gradle-${GRADLE_VERSION}/bin/gradle" assembleRelease
+    artifacts:
+      - "**/build/outputs/**/*.apk"
