@@ -1,0 +1,8 @@
+{
+  "name": "KNKT Web",
+  "description": "KNKT Web - Interface for Google Messages on the Web and encrypted messaging, featuring live web sync, customizable bubble and group theming, media browser, and gesture controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
